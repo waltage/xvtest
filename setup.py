@@ -7,5 +7,5 @@ setup(
     "xvtest",
     "xvtest.adapters",
     "xvtest.testing",
-    ],
+  ],
 )

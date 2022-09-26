@@ -10,6 +10,7 @@ from xvtest.exceptions import Xv6CommandResponseError
 
 class Xv6BaseCommand:
   """Base class for xv6 commands."""
+
   def __init__(self, send: bytes, recv_size: int = -1, timeout: float = 0.5):
     self.timeout = timeout
     self.send_bytes: bytearray = bytearray(send)
@@ -44,7 +45,8 @@ class Xv6BaseCommand:
         return
 
     if self.response["expected_size"] > -1:
-      self.response["bytes"] = adapter.read_stdout(self.response["expected_size"] )
+      self.response["bytes"] = adapter.read_stdout(
+        self.response["expected_size"])
       self.response["actual_size"] = len(self.response["bytes"])
 
   def _check_response(self):
@@ -56,7 +58,7 @@ class Xv6BaseCommand:
     needles = "({})".format("|".join(panic_messages))
 
     panics = re.search(
-      bytes(needles, "utf-8"), 
+      bytes(needles, "utf-8"),
       self.response["bytes"])
     if panics:
       raise Xv6CommandResponseError("unrecoverable error",
@@ -79,6 +81,7 @@ class Xv6BaseCommand:
 
 class Xv6VoidCommand(Xv6BaseCommand):
   """Execute a command with no expected response."""
+
   def __init__(self, cmd: str, timeout: float = 0.5):
     super(Xv6VoidCommand, self).__init__(
       bytearray(cmd, "utf-8"),
@@ -89,6 +92,7 @@ class Xv6VoidCommand(Xv6BaseCommand):
 
 class Xv6StaticCommand(Xv6BaseCommand):
   """Execute a command with a fixed-sized expected response."""
+
   def __init__(self, cmd: str, n: int, timeout: float = 0.5):
     super(Xv6StaticCommand, self).__init__(
       bytearray(cmd, "utf-8"),
@@ -99,12 +103,14 @@ class Xv6StaticCommand(Xv6BaseCommand):
 
 class Xv6VariableCommand(Xv6BaseCommand):
   """Execute a command with a variable-sized expected resuponse"""
+
   def __init__(self, cmd: str, timeout: float = 0.5):
     super(Xv6VariableCommand, self).__init__(
       bytearray(cmd, "utf-8"),
       0,
       timeout
     )
+
 
 """
 TODO(dwalt): add trap codes

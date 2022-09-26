@@ -5,10 +5,10 @@ _MaybeExc = [Exception, None]
 
 class AutoGradeError(BaseException):
   def __init__(
-      self,
-      location: str,
-      message: str,
-      exc: _MaybeExc = None):
+          self,
+          location: str,
+          message: str,
+          exc: _MaybeExc = None):
     self.location = location
     self.message = message
     self.exc = exc
@@ -74,7 +74,8 @@ class Xv6CommandError(AutoGradeError):
 
 class Xv6CommandConsoleMirrorError(Xv6CommandError):
   def __init__(self, message: str):
-    super(Xv6CommandConsoleMirrorError, self).__init__("console read-back", message)
+    super(Xv6CommandConsoleMirrorError, self).__init__(
+      "console read-back", message)
 
 
 class Xv6CommandResponseError(Xv6CommandError):

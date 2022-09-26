@@ -6,6 +6,7 @@ from xvtest.adapters.xv6 import Xv6Adapter
 from xvtest.testing.command import Xv6VariableCommand
 from xvtest.testing.fs import FileStat
 
+
 class BuiltinLS:
   def __init__(self, cwd: str, path: str):
     if cwd[-1] == "/":

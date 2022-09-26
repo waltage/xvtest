@@ -1,5 +1,6 @@
 import math
 
+
 class FileStat:
   def __init__(self, cwd: str, entry: bytearray):
     self.cwd = cwd
@@ -21,5 +22,3 @@ class FileStat:
       self.size,
       self.blocks
     )
-  
-
