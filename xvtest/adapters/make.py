@@ -10,6 +10,7 @@ class MakeAdapterConfig:
   def __init__(self, log_name: str = "default"):
     self.logger = logging.getLogger("MakeAdapter.{}".format(log_name))
     self.make_cwd = os.getcwd()
+    self.prod = False
 
 
 class MakeAdapter:
@@ -18,8 +19,18 @@ class MakeAdapter:
 
   def build(self):
     self.conf.logger.debug("make: building")
+
+    if self.conf.prod:
+      cmd = [
+        "env", "-i", "PATH={}".format(os.environ["PATH"]),
+        "su", "student", "-c",
+        "make"
+      ]
+    else:
+      cmd = ["make",]
+
     make_session = subprocess.Popen(
-      ["make"], 
+      cmd, 
       stdout=subprocess.PIPE, 
       stderr=subprocess.PIPE, 
       cwd=self.conf.make_cwd)
@@ -31,8 +42,18 @@ class MakeAdapter:
 
   def clean(self):
     self.conf.logger.debug("make: cleaning")
+
+    if self.conf.prod:
+      cmd = [
+        "env", "-i", "PATH={}".format(os.environ["PATH"]),
+        "su", "student", "-c",
+        "make", "clean",
+      ]
+    else:
+      cmd = ["make", "clean", ]
+
     make_session = subprocess.Popen(
-      ["make", "clean"], 
+      cmd, 
       stdout=subprocess.PIPE, 
       stderr=subprocess.PIPE,
       cwd=self.conf.make_cwd)
