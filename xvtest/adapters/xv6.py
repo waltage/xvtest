@@ -22,6 +22,7 @@ class Xv6AdapterConfig:
     self.logger = logging.getLogger("Xv6Adapter.{}".format(log_name))
     self.xv6_buffer = 1024
     self.xv6_cwd = os.getcwd()
+    self.prod = False
 
 
 def _xv6_safecall(fn) -> Callable:
@@ -75,15 +76,29 @@ class Xv6Adapter:
 
   def start_xv6(self):
     os.chdir(self.conf.xv6_cwd)
-    cmd = [
-      "qemu-system-i386",
-      "-drive", "file=xv6.img,media=disk,index=0,format=raw",
-      "-drive", "file=fs.img,index=1,media=disk,format=raw",
-      "-smp", "2",
-      "-m", "512",
-      "-display", "none",
-      "-nographic",
-    ]
+    if self.prod:
+      cmd = [
+        "env", "-i", "PATH={}".format(os.environ["PATH"]),
+        "su", "student", "-c",
+        "qemu-system-i386",
+        "-drive", "file=xv6.img,media=disk,index=0,format=raw",
+        "-drive", "file=fs.img,index=1,media=disk,format=raw",
+        "-smp", "2",
+        "-m", "512",
+        "-display", "none",
+        "-nographic",
+      ]
+    else:
+      cmd = [
+        "qemu-system-i386",
+        "-drive", "file=xv6.img,media=disk,index=0,format=raw",
+        "-drive", "file=fs.img,index=1,media=disk,format=raw",
+        "-smp", "2",
+        "-m", "512",
+        "-display", "none",
+        "-nographic",
+      ]
+
     try:
       create_flags = os.O_CREAT | os.O_RDWR | os.O_NONBLOCK
       self._internal_buffer_rd = os.open(ADAPTER_OUT_PATH, create_flags)
