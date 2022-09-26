@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-import io
 import os
 import logging
 import subprocess
-import select
-import threading
 import time
 
 from typing import Callable
@@ -18,6 +15,7 @@ ADAPTER_OUT_PATH = "./xv6adapter.stdout"
 
 class Xv6AdapterConfig:
   """Options for configuring xv6 adapters."""
+
   def __init__(self, log_name: str = "default"):
     self.logger = logging.getLogger("Xv6Adapter.{}".format(log_name))
     self.xv6_buffer = 1024
@@ -39,6 +37,7 @@ def _xv6_safecall(fn) -> Callable:
 
 class Xv6Adapter:
   """Primary interface for interacting with an xv6 session."""
+
   def __init__(self, config: Xv6AdapterConfig):
     self.conf = config
     self.active = False
