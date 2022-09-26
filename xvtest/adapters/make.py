@@ -27,12 +27,12 @@ class MakeAdapter:
         "make"
       ]
     else:
-      cmd = ["make",]
+      cmd = ["make", ]
 
     make_session = subprocess.Popen(
-      cmd, 
-      stdout=subprocess.PIPE, 
-      stderr=subprocess.PIPE, 
+      cmd,
+      stdout=subprocess.PIPE,
+      stderr=subprocess.PIPE,
       cwd=self.conf.make_cwd)
     make_session.wait(4)
     if make_session.returncode != 0:
@@ -53,8 +53,8 @@ class MakeAdapter:
       cmd = ["make", "clean", ]
 
     make_session = subprocess.Popen(
-      cmd, 
-      stdout=subprocess.PIPE, 
+      cmd,
+      stdout=subprocess.PIPE,
       stderr=subprocess.PIPE,
       cwd=self.conf.make_cwd)
     make_session.wait(3)
