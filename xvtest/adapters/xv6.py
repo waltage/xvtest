@@ -75,7 +75,7 @@ class Xv6Adapter:
 
   def start_xv6(self):
     os.chdir(self.conf.xv6_cwd)
-    if self.prod:
+    if self.conf.prod:
       cmd = [
         "env", "-i", "PATH={}".format(os.environ["PATH"]),
         "su", "student", "-c",
